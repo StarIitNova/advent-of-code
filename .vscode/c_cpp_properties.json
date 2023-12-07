@@ -1,0 +1,20 @@
+{
+    "env": {
+        "myIncludePath": [
+            "${workspaceFolder}/source"
+        ],
+        "myDefines": []
+    },
+    "configurations": [
+        {
+            "name": "*",
+            "includePath": [
+                "${myIncludePath}"
+            ],
+            "defines": [
+                "${myDefines}"
+            ]
+        }
+    ],
+    "version": 4
+}
