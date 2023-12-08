@@ -40,103 +40,112 @@
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <numeric>
 #include <string>
 #include <vector>
 
-#define ASSERT_MSG(fn, msg)                                                                                            \
-    if (!fn) {                                                                                                         \
-        std::cout << "Assertion Failed: " #fn " | " << __FILE__ << " line " << __LINE__ << "\n";                       \
-        std::cout << "    " << msg << "\n";                                                                            \
-        std::raise(SIGABRT);                                                                                           \
+#define ASSERT_MSG(fn, msg)                                                                      \
+    if (!fn) {                                                                                   \
+        std::cout << "Assertion Failed: " #fn " | " << __FILE__ << " line " << __LINE__ << "\n"; \
+        std::cout << "    " << msg << "\n";                                                      \
+        std::raise(SIGABRT);                                                                     \
     }
 #define ASSERT(fn) ASSERT_MSG(fn, "Program exit requested")
 
 namespace AOC {
-std::string readfile(std::string fname) {
-    std::ifstream f(fname);
-    ASSERT_MSG(f.is_open(), "Failed to open file '" + fname);
-    std::string v = std::string((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
-    f.close();
-    return v;
-}
-
-// coupable = if the string should be tested for being empty (coupable = false means a greedy vector and will have empty
-// strings in it)
-std::vector<std::string> split(std::string str, std::string delim = " ", bool coupable = true) {
-    std::vector<std::string> fin{};
-    size_t i = 0;
-    while ((i = str.find(delim)) != std::string::npos) {
-        if (coupable && str.substr(0, i).empty()) {
-            str.erase(0, delim.size());
-            continue;
-        }
-        fin.push_back(str.substr(0, i));
-        str.erase(0, i + delim.size());
+    std::string readfile(std::string fname) {
+        std::ifstream f(fname);
+        ASSERT_MSG(f.is_open(), "Failed to open file '" + fname);
+        std::string v = std::string((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
+        f.close();
+        return v;
     }
-    if (!str.empty())
-        fin.push_back(str);
-    return fin;
-}
 
-template <typename T, typename T2> std::vector<T> map(T (*f)(T2), std::vector<T2> vec) {
-    std::vector<T> newVec{};
-    for (const auto &val : vec)
-        newVec.push_back(f(val));
-    return newVec;
-}
+    // coupable = if the string should be tested for being empty (coupable = false means a greedy vector and will have empty
+    // strings in it)
+    std::vector<std::string> split(std::string str, std::string delim = " ", bool coupable = true) {
+        std::vector<std::string> fin{};
+        size_t i = 0;
+        while ((i = str.find(delim)) != std::string::npos) {
+            if (coupable && str.substr(0, i).empty()) {
+                str.erase(0, delim.size());
+                continue;
+            }
+            fin.push_back(str.substr(0, i));
+            str.erase(0, i + delim.size());
+        }
+        if (!str.empty())
+            fin.push_back(str);
+        return fin;
+    }
 
-template <typename T> T max(T a, T b) { return b > a ? b : a; }
-template <typename T, typename... Ts> T max(T first, const Ts &...rest) { return max(first, max(rest...)); }
+    template <typename T, typename T2>
+    std::vector<T> map(T (*f)(T2), std::vector<T2> vec) {
+        std::vector<T> newVec{};
+        for (const auto &val : vec)
+            newVec.push_back(f(val));
+        return newVec;
+    }
 
-template <typename T> T max(std::vector<T> vals) {
-    int highest = INT_MIN;
-    for (const auto &v : vals)
-        if (v > highest)
-            highest = v;
-    return highest;
-}
+    template <typename T>
+    T max(T a, T b) { return b > a ? b : a; }
+    template <typename T, typename... Ts>
+    T max(T first, const Ts &...rest) { return max(first, max(rest...)); }
 
-template <typename T> T min(T a, T b) { return b < a ? b : a; }
-template <typename T, typename... Ts> T min(T first, const Ts &...rest) { return min(first, min(rest...)); }
+    template <typename T>
+    T max(std::vector<T> vals) {
+        int highest = INT_MIN;
+        for (const auto &v : vals)
+            if (v > highest)
+                highest = v;
+        return highest;
+    }
 
-template <typename T> T min(const std::vector<T> &vals) {
-    int lowest = INT_MAX;
-    for (const auto &v : vals)
-        if (v < lowest)
-            lowest = v;
-    return lowest;
-}
+    template <typename T>
+    T min(T a, T b) { return b < a ? b : a; }
+    template <typename T, typename... Ts>
+    T min(T first, const Ts &...rest) { return min(first, min(rest...)); }
 
-template <typename T> T pop(std::vector<T> &vec) {
-    T v = vec.back();
-    vec.pop_back();
-    return v;
-}
+    template <typename T>
+    T min(const std::vector<T> &vals) {
+        int lowest = INT_MAX;
+        for (const auto &v : vals)
+            if (v < lowest)
+                lowest = v;
+        return lowest;
+    }
 
-// std::string removeAll(std::string str, std::string delimiter) {
-//     str.erase(std::remove(str.begin(), str.end(), delimiter), str.end());
-//     return str;
-// }
+    template <typename T>
+    T pop(std::vector<T> &vec) {
+        T v = vec.back();
+        vec.pop_back();
+        return v;
+    }
 
-std::string rep(std::string str, size_t count = 2) {
-    std::string fin = "";
-    for (size_t i = 0; i < count; i++)
-        fin += str;
-    return fin;
-}
+    // std::string removeAll(std::string str, std::string delimiter) {
+    //     str.erase(std::remove(str.begin(), str.end(), delimiter), str.end());
+    //     return str;
+    // }
 
-template <typename T>
-void sort(
-    std::vector<T> &vec, bool (*sfn)(T, T) = [](T a, T b) -> bool { return a < b; }) {
-    std::sort(vec.begin(), vec.end(), sfn);
-}
+    std::string rep(std::string str, size_t count = 2) {
+        std::string fin = "";
+        for (size_t i = 0; i < count; i++)
+            fin += str;
+        return fin;
+    }
 
-template <typename T>
-std::vector<T> sortip(
-    std::vector<T> vec, bool (*sfn)(T, T) = [](T a, T b) -> bool { return a < b; }) {
-    std::sort(vec.begin(), vec.end(), sfn);
-    return vec;
-}
+    template <typename T>
+    void sort(
+        std::vector<T> &vec, bool (*sfn)(T, T) = [](T a, T b) -> bool { return a < b; }) {
+        std::sort(vec.begin(), vec.end(), sfn);
+    }
+
+    template <typename T>
+    std::vector<T> sortip(
+        std::vector<T> vec, bool (*sfn)(T, T) = [](T a, T b) -> bool { return a < b; }) {
+        std::sort(vec.begin(), vec.end(), sfn);
+        return vec;
+    }
 
 } // namespace AOC
 
