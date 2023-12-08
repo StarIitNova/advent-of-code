@@ -71,11 +71,11 @@ int main() {
 
     auto sortFn = [](Hand a, Hand b) -> bool {
         if (a.worth != b.worth)
-            return a.worth < b.worth;
+            return a.worth <= b.worth;
 
         for (size_t i = 0; i < a.deck.size(); i++)
             if (a.deck[i] != b.deck[i])
-                return getCharWorth(a.deck[i]) < getCharWorth(b.deck[i]);
+                return getCharWorth(a.deck[i]) <= getCharWorth(b.deck[i]);
 
         return true;
     };
