@@ -18,6 +18,10 @@
 //         - removes all occurances of delimiter in string
 //     std::string rep(std::string string, size_t count)
 //         - returns a string that is what string is repeated count times
+//     std::vector<T> sortip(std::vector<T> vector, sortFunction?)
+//         - sorts the specified vector with the function and returns it
+//     void sort(std::vector<T> vector, sortFunction?)
+//         - sorts the specified vector with the function in place (sorry for naming these backwards)
 // DEFINITIONS:
 //     ASSERT_MSG(testCase, message)
 //         - if testCase fails, message is printed to the output (along with "Assertion Failed: testCase")
@@ -121,8 +125,27 @@ std::string rep(std::string str, size_t count = 2) {
     return fin;
 }
 
-template <typename T> void sort(std::vector<T> &vec, bool (*sfn)(T, T)) { std::sort(vec.begin(), vec.end(), sfn); }
+template <typename T>
+void sort(
+    std::vector<T> &vec, bool (*sfn)(T, T) = [](T a, T b) -> bool { return a < b; }) {
+    std::sort(vec.begin(), vec.end(), sfn);
+}
+
+template <typename T>
+std::vector<T> sortip(
+    std::vector<T> vec, bool (*sfn)(T, T) = [](T a, T b) -> bool { return a < b; }) {
+    std::sort(vec.begin(), vec.end(), sfn);
+    return vec;
+}
 
 } // namespace AOC
 
 #endif // _AOC_CORE_H
+
+#ifndef _AOC_NO_DEFINES
+
+#define _aoc_strtoi [](std::string v) -> int { return std::stoi(v); }
+#define _aoc_strtoll [](std::string v) -> long long { return std::stoll(v); }
+#define _aoc_strtoull [](std::string v) -> size_t { return (size_t)std::stoll(v); }
+
+#endif // _AOC_NO_DEFINES
