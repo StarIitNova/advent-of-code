@@ -1,7 +1,7 @@
 #include "core.h"
 
 int main() {
-    std::vector<std::string> data = AOC::split(AOC::readfile("input"), "\n");
+    std::vector<std::string> data = AOC::split(AOC::readfile("input.txt"), "\n");
     std::string times = AOC::split(data[0], ":")[1];
     std::string dists = AOC::split(data[1], ":")[1];
 

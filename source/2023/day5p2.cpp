@@ -14,15 +14,13 @@ struct SeedInfo {
 };
 
 int main() {
-    std::vector<std::string> blocks = AOC::split(AOC::readfile("input"), "\n\n");
+    std::vector<std::string> blocks = AOC::split(AOC::readfile("input.txt"), "\n\n");
     std::string inputStr = blocks[0];
     blocks.erase(blocks.begin());
 
-    auto strtoi = [](std::string v) -> size_t { return std::stoll(v); };
-
     std::vector<std::string> spl1 = AOC::split(inputStr, ":");
     std::vector<std::string> spl2 = AOC::split(spl1[1]);
-    auto inputs = AOC::map<size_t, std::string>(strtoi, spl2);
+    auto inputs = AOC::map<size_t, std::string>(_aoc_strtoull, spl2);
 
     std::vector<SeedInfo> seeds;
     for (int i = 0; i < inputs.size(); i += 2)
@@ -33,7 +31,7 @@ int main() {
         std::vector<std::string> lines = AOC::split(block, "\n");
         lines.erase(lines.begin());
         for (const auto &line : lines)
-            ranges.push_back(SeedInfo(AOC::map<size_t, std::string>(strtoi, AOC::split(line))));
+            ranges.push_back(SeedInfo(AOC::map<size_t, std::string>(_aoc_strtoull, AOC::split(line))));
 
         std::vector<SeedInfo> newVals{};
         while (seeds.size() > 0) {

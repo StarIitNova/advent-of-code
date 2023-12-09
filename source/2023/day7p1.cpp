@@ -6,8 +6,7 @@ struct Hand {
     unsigned short worth;
 };
 
-// change J to 11 for part 1
-std::map<char, int> cardWorth{{'T', 10}, {'J', 1}, {'Q', 12}, {'K', 13}, {'A', 14}};
+std::map<char, int> cardWorth{{'T', 10}, {'J', 11}, {'Q', 12}, {'K', 13}, {'A', 14}};
 
 unsigned short getCharWorth(char c) {
     if (cardWorth.count(c))
@@ -23,42 +22,24 @@ unsigned short getWorth(std::string hand) {
         counts[hand[i]]++;
     }
 
-    if (!counts.count('J'))
-        counts['J'] = 0;
-
     bool hasThree = false;
     unsigned short twoGroups = 0;
     for (const auto &[card, count] : counts) {
         if (count == 5)
             return 7;
-        else if (count == 4) {
-            if (counts['J'] == 1)
-                return 7;
+        else if (count == 4)
             return 6;
-        } else if (count == 3) {
-            if (counts['J'] == 2)
-                return 7;
-            else if (counts['J'] == 1)
-                return 6;
+        else if (count == 3)
             hasThree = true;
-        } else if (count == 2) {
-            if (card != 'J' && counts['J'] == 3)
-                return 7;
-            else if (card != 'J' && counts['J'] == 2)
-                return 6;
-            else if (card != 'J' && counts['J'] == 1) {
-                hasThree = true;
-                continue;
-            }
+        else if (count == 2)
             twoGroups++;
-        }
     }
 
     return (hasThree ? 3 : 0) + twoGroups + 1;
 }
 
 int main() {
-    auto input = AOC::split(AOC::readfile("input"), "\n");
+    auto input = AOC::split(AOC::readfile("input.txt"), "\n");
 
     std::vector<Hand> hands{};
 

@@ -22,6 +22,10 @@
 //         - sorts the specified vector with the function and returns it
 //     void sort(std::vector<T> vector, sortFunction?)
 //         - sorts the specified vector with the function in place (sorry for naming these backwards)
+//     std::string MD5(std::string str)
+//         - returns the MD5 hash of str
+//     bool all(std::vector<T> vec)
+//         - returns true if everything in the vector is true (unknown behavior if T is not a bool)
 // DEFINITIONS:
 //     ASSERT_MSG(testCase, message)
 //         - if testCase fails, message is printed to the output (along with "Assertion Failed: testCase")
@@ -36,6 +40,7 @@
 #include <algorithm>
 #include <array>
 #include <climits>
+#include <cmath>
 #include <csignal>
 #include <cstdint>
 #include <deque>
@@ -150,6 +155,17 @@ std::vector<T> sortip(
 }
 
 std::string MD5(const std::string &str) { return _md5_imp(str); }
+
+template <typename T> bool all(std::vector<T> vec) {
+    for (const auto &v : vec)
+        if (!v)
+            return false;
+    return true;
+}
+
+std::string trimleft(std::string str) { return str.erase(0, str.find_first_not_of(" \t\n\r\f\v")); }
+std::string trimright(std::string str) { return str.erase(str.find_last_not_of(" \t\n\r\f\v") + 1); }
+std::string trim(std::string str) { return trimleft(trimright(str)); }
 } // namespace AOC
 
 #endif // _AOC_CORE_H
