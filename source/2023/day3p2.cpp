@@ -1,27 +1,5 @@
-#include <iostream>
-#include <string>
-#include <vector>
+#include "core.h"
 
-// part 1
-bool check(std::vector<std::string> &bin, int x, int y, int col) {
-    std::vector<int> toCheck = {
-        x + 1 + y * cols, x + 1 + (y + 1) * cols, x + (y + 1) * cols, x - 1 + (y + 1) * cols,
-        x - 1 + y * cols, x - 1 + (y - 1) * cols, x + (y - 1) * cols, x + 1 + (y - 1) * cols,
-    };
-
-    if (bin[x + 1 + y * cols] == "E")
-        if (check(bin, x + 1, y, cols))
-            return true;
-
-    for (const auto &pos : toCheck)
-        if (pos < bin.size())
-            if (bin[pos] != "." && !isdigit(bin[pos][0]) && bin[pos] != "E")
-                return true;
-
-    return false;
-}
-
-// part 2
 size_t getGearRatio(std::vector<std::string> &bin, int x, int y, int cols) {
     std::vector<int> toCheck = {
         x + 1 + y * cols, x + 1 + (y + 1) * cols, x + (y + 1) * cols, x - 1 + (y + 1) * cols,
@@ -51,12 +29,11 @@ size_t getGearRatio(std::vector<std::string> &bin, int x, int y, int cols) {
 }
 
 int main() {
+    std::vector<std::string> inputs = AOC::split(AOC::readfile("input.txt"), "\n");
     std::vector<std::string> bin{};
 
-    std::string input;
-
     size_t lineLen = 0, lineCount = 0;
-    while (std::getline(std::cin, input)) {
+    while (const auto &input : inputs) {
         lineCount++;
         lineLen = input.size();
         for (size_t i = 0; i < input.size(); i++) {
@@ -79,26 +56,9 @@ int main() {
             if (bin[x + y * lineLen].empty())
                 continue;
 
-            // part 2
             if (bin[x + y * lineLen] == "*")
                 total += getGearRatio(bin, x, y, lineLen);
-
-            // part 1
-            // if (isdigit(bin[x + y * lineLen][0])) {
-            //     // part 1
-            //     if (check(bin, x, y, lineLen)) {
-            //         total += std::stoi(bin[x + y * lineLen]);
-            //     }
-
-            //     // test code
-            //     // std::cout << (check(bin, x, y, lineLen) ? "T" : "F");
-            // } // else {
-            //   // test code
-            //   // std::cout << bin[x + y * lineLen];
-            // // }
         }
-        // test code
-        // std::cout << "\n";
     }
 
     std::cout << total << "\n";

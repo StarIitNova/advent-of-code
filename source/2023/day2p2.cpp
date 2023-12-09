@@ -1,20 +1,16 @@
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
+#include "core.h"
 
 int main() {
-    std::string input;
+    std::vector<std::string> inputs = AOC::split(AOC::readfile("input.txt"), "\n");
 
     int maxRed = 12, maxGreen = 13, maxBlue = 14;
     int sum = 0;
-    while (std::getline(std::cin, input)) {
+    for (const auto &input : inputs) {
         size_t f = input.find_first_of(':') + 2;
         size_t start = input.find_first_of("0123456789");
         int gameID = std::stoi(input.substr(start, f - 2 - start));
-        // bool gameFailed = false; // for part 1
 
-        int highRed = 0, highGreen = 0, highBlue = 0; // part 2
+        int highRed = 0, highGreen = 0, highBlue = 0;
         while (f != std::string::npos) {
             std::vector<std::string> cont;
             std::string x;
@@ -35,7 +31,6 @@ int main() {
                 }
             }
 
-            // part 2
             if (red > highRed)
                 highRed = red;
             if (green > highGreen)
@@ -43,25 +38,13 @@ int main() {
             if (blue > highBlue)
                 highBlue = blue;
 
-            // following is for part 1
-            // if (red > maxRed || green > maxGreen || blue > maxBlue) {
-            //     gameFailed = true;
-            //     break;
-            // }
-
             f = input.find_first_of(';', f + 1);
             if (f == std::string::npos)
                 break;
             f++;
         }
 
-        // part 2
         sum += highRed * highGreen * highBlue;
-
-        // following is for part 1
-        // if (!gameFailed) {
-        //     sum += gameID;
-        // }
     }
 
     std::cout << sum << "\n";

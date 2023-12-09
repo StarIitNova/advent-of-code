@@ -3,10 +3,10 @@
 static std::vector<std::string> rep { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" }
 
 int main() {
-    std::string input;
+    std::vector<std::string> inputs = AOC::split(AOC::readfile("input.txt"), "\n");
 
     int total = 0;
-    while (std::getline(std::cin, input)) {
+    for (auto &input : inputs) {
         for (size_t i = 0; i < rep.size(); i++)
             std::replace(input.begin(), input.end(), rep[i], std::to_string(i) + rep[i]);
 
