@@ -1,1 +1,1 @@
-g++ -Isource/ -g -Og -std=c++17 -o bin/aoc source/$1.cpp && ./bin/aoc
+g++ -Isource/ -g -Og -std=c++17 -o bin/aoc source/$1.cpp source/tools/md5.cpp && ./bin/aoc
