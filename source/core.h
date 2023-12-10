@@ -57,6 +57,10 @@
 #define AOC_UNDEFINED(s)
 #endif
 
+#ifndef _AOC_NO_STRING_LITS
+using namespace std::string_literals;
+#endif
+
 #define ASSERT_MSG(fn, msg)                                                                                            \
     if (!fn) {                                                                                                         \
         std::cout << "Assertion Failed: " #fn " | " << __FILE__ << " line " << __LINE__ << "\n";                       \
@@ -129,6 +133,18 @@ template <typename T> T pop(std::vector<T> &vec) {
     return v;
 }
 
+template <typename T> T popf(std::deque<T> &deq) {
+    T v = deq.front();
+    deq.pop_front();
+    return v;
+}
+
+template <typename T> T popb(std::deque<T> &deq) {
+    T v = deq.back();
+    deq.pop_back();
+    return v;
+}
+
 // std::string removeAll(std::string str, std::string delimiter) {
 //     str.erase(std::remove(str.begin(), str.end(), delimiter), str.end());
 //     return str;
@@ -161,6 +177,30 @@ template <typename T> bool all(std::vector<T> vec) {
         if (!v)
             return false;
     return true;
+}
+
+template <typename T> bool in(const std::vector<T> &vec, T v) {
+    for (const auto &vv : vec)
+        if (vv = v)
+            return true;
+    return false;
+}
+
+template <typename T> std::vector<T> intersect(std::vector<T> vec, std::vector<T> bAnd) {
+    std::sort(vec.begin(), vec.end());
+    std::sort(bAnd.begin(), bAnd.end());
+    std::vector<T> res;
+    std::set_intersection(vec.begin(), vec.end(), bAnd.begin(), bAnd.end(), std::back_inserter(res));
+    return res;
+}
+
+template <typename T> std::vector<T> intersectOr(std::vector<T> vec, std::vector<T> bOr) {
+    std::sort(vec.begin(), vec.end());
+    std::sort(bOr.begin(), bOr.end());
+    std::vector<T> res(vec.size() + bOr.size());
+    auto it = std::set_union(vec.begin(), vec.end(), bOr.begin(), bOr.end(), res.begin());
+    res.resize(it - res.begin());
+    return res;
 }
 
 std::string trimleft(std::string str) { return str.erase(0, str.find_first_not_of(" \t\n\r\f\v")); }
