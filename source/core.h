@@ -1,37 +1,18 @@
 // Advent of Code C++ Utility Script
 // Written by StarlitNova (@starlitnova, or simply Nova)
 // provides simple usage functions based on python functions for AoC
-// Usage:
-//     std::string readfile(std::string fileName)
-//         - returns an entire file's contents, retrieved from fileName
-//     std::vector<std::string> split(std::string string, std::string delimiter)
-//         - returns a vector of substrings, retrieved by splitting 'string' by 'delimiter'
-//     std::vector<T> map([](T2) -> T {} transformFunction, std::vector<T2> oldVector)
-//         - returns a vector of type T which contains the elements of oldVector transformed by transformFunction
-//     T max(...)
-//         - returns the max value provided, infinite argument function (or provide an std::vector<T>)
-//     T min(...)
-//         - returns the min value provided, infinite argument function (or provide an std::vector<T>)
-//     T pop(std::vector<T> &vector)
-//         - pops the last element of the provided vector and returns it
-//     std::string removeAll(std::string string, std::string delimiter)
-//         - removes all occurances of delimiter in string
-//     std::string rep(std::string string, size_t count)
-//         - returns a string that is what string is repeated count times
-//     std::vector<T> sortip(std::vector<T> vector, sortFunction?)
-//         - sorts the specified vector with the function and returns it
-//     void sort(std::vector<T> vector, sortFunction?)
-//         - sorts the specified vector with the function in place (sorry for naming these backwards)
-//     std::string MD5(std::string str)
-//         - returns the MD5 hash of str
-//     bool all(std::vector<T> vec)
-//         - returns true if everything in the vector is true (unknown behavior if T is not a bool)
-// DEFINITIONS:
-//     ASSERT_MSG(testCase, message)
-//         - if testCase fails, message is printed to the output (along with "Assertion Failed: testCase")
-//     ASSERT(testCase)
-//         - same as ASSERT_MSG except message is "Program exit requested"
-//
+
+// Documentation was removed due to it being out of date. Once I finished
+// AOC 2023 I will rewrite the documentation.
+
+// For now, the arguments and names of the functions should explain themselves
+
+// Some things you can define are also here:
+// #define _AOC_NO_STRING_LITS
+//    --> disables std::string_literals, it is enabled by default for the operator""s
+// #define _AOC_NO_DEFINES
+//    --> disables helpful defines that this script generates. Note that none of the defines
+//        have short names and are all prefixed with _aoc_ (ex _aoc_strtoi)
 
 #pragma once
 
