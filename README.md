@@ -6,7 +6,8 @@ Need help on AoC? Join my [Discord Server](https://discord.gg/r4BfjWRWsj)
 
 To respect this repository, please do not steal my answers, instead you may use them to learn from (or translate into other languages, but make sure you understand what these scripts do). The core.h file in source/ along with the tools folder are free of use, just make sure you credit me (and the person who made the MD5 script) in your projects. The documentation for the core.h file will be rewritten after I complete AoC 2023.
 
-Want to test any of these files or don't understand how I obtain the input? The test.bat and test.sh files allow for easy testing. Simply run:
+Want to test any of these files or don't understand how I obtain the input? The test.bat and test.sh files allow for easy testing.
+First setup the directory by navigating to the setup folder and then running whichever script for your operating system, then navigate back to the top level directory and simply run:
 
 ```batch
 test 2023/day1p1
