@@ -12,7 +12,7 @@ Ex: I have 6 stars from AOC2022, but none of the first 3 days as a file (lost wh
 
 ### Need to be completed
 
-- 2015/day[6-25]p[1-2].cpp
+- 2015/day[8-25]p[1-2].cpp
 - 2016/day[1-25]p[1-2].cpp
 - 2017/day[1-25]p[1-2].cpp
 - 2018/day[1-25]p[1-2].cpp
