@@ -1,7 +1,7 @@
 @echo off
 
 set OUTPUT=bin/aoc
-set CFLAGS=-Isource/ -std=c++17 -O2
+set CFLAGS=-Isource/ -std=c++17 -g -Og
 set LFLAGS=
 
 echo -- Compiling AoC Script --
