@@ -63,21 +63,25 @@ std::string readfile(std::string fname) {
     return ss.str();
 }
 
-// coupable = if the string should be tested for being empty (coupable = false means a greedy vector and will have empty
-// strings in it)
-std::vector<std::string> split(std::string str, std::string delim = " ", bool coupable = true) {
+std::vector<std::string> split(const std::string &str, const std::string &delim = " ", bool skipEmpty = true) {
     std::vector<std::string> fin{};
-    size_t i = 0;
-    while ((i = str.find(delim)) != std::string::npos) {
-        if (coupable && str.substr(0, i).empty()) {
-            str.erase(0, delim.size());
-            continue;
+    size_t start = 0;
+    size_t end = str.find(delim);
+
+    while (end != std::string::npos) {
+        std::string token = str.substr(start, end - start);
+        if (!token.empty() || !skipEmpty) {
+            fin.push_back(token);
         }
-        fin.push_back(str.substr(0, i));
-        str.erase(0, i + delim.size());
+        start = end + delim.size();
+        end = str.find(delim, start);
     }
-    if (!str.empty())
-        fin.push_back(str);
+
+    std::string lastToken = str.substr(start);
+    if (!lastToken.empty() || !skipEmpty) {
+        fin.push_back(lastToken);
+    }
+
     return fin;
 }
 
@@ -191,10 +195,10 @@ template <typename T> std::vector<T> intersectOr(std::vector<T> vec, std::vector
 
 std::vector<std::string> rezip(std::vector<std::string> vec) {
     std::vector<std::string> result{};
-    for (size_t i = 0; i < vec[0].size(); i++)
-        result.push_back("");
     for (const auto &val : vec) {
         for (size_t i = 0; i < val.size(); i++) {
+            if (i >= result.size())
+                result.push_back("");
             result[i] += val[i];
         }
     }
@@ -202,9 +206,8 @@ std::vector<std::string> rezip(std::vector<std::string> vec) {
 }
 
 std::string reverse(std::string str) {
-    std::string res{};
-    for (size_t i = str.size() - 1; i >= 0; i--)
-        res += str[i];
+    std::string res = str;
+    std::reverse(res.begin(), res.end());
     return res;
 }
 
@@ -240,9 +243,10 @@ std::vector<T> subvec(const std::vector<T> &vec, size_t start, size_t end = stat
 template <typename T> bool vecEquals(const std::vector<T> &a, const std::vector<T> &b) {
     if (a.size() != b.size())
         return false;
-    for (size_t i = 0; i < a.size(); i++)
+    for (size_t i = 0; i < a.size(); i++) {
         if (a[i] != b[i])
             return false;
+    }
     return true;
 }
 
