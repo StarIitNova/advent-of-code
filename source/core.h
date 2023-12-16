@@ -171,9 +171,16 @@ template <typename T> bool all(std::vector<T> vec) {
 
 template <typename T> bool in(const std::vector<T> &vec, T v) {
     for (const auto &vv : vec)
-        if (vv = v)
+        if (vv == v)
             return true;
     return false;
+}
+
+template <typename T> size_t inPos(const std::vector<T> &vec, T v) {
+    for (size_t i = 0; i < vec.size(); i++)
+        if (vec[i] == v)
+            return i;
+    return -1;
 }
 
 template <typename T> std::vector<T> intersect(std::vector<T> vec, std::vector<T> bAnd) {
@@ -248,6 +255,13 @@ template <typename T> bool vecEquals(const std::vector<T> &a, const std::vector<
             return false;
     }
     return true;
+}
+
+template <typename T> T sum(const std::vector<T> &vec) {
+    T fin = 0;
+    for (const auto &val : vec)
+        fin += val;
+    return fin;
 }
 
 std::string trimleft(std::string str) { return str.erase(0, str.find_first_not_of(" \t\n\r\f\v")); }
