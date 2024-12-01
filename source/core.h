@@ -88,11 +88,35 @@ std::vector<std::string> split(const std::string &str, const std::string &delim 
     return fin;
 }
 
+template <typename T, typename T2> T apply(T (*f)(T, T2), std::vector<T2> vec, T init) {
+    T v = init;
+    for (const auto &val : vec)
+        v = f(v, val);
+    return v;
+}
+
 template <typename T, typename T2> std::vector<T> map(T (*f)(T2), std::vector<T2> vec) {
     std::vector<T> newVec{};
     for (const auto &val : vec)
         newVec.push_back(f(val));
     return newVec;
+}
+
+template <typename T, typename T2> std::vector<T> maptwo(T (*f)(T2, T2), std::vector<T2> a, std::vector<T2> b) {
+    std::vector<T> newVec{};
+    for (size_t i = 0; i < std::min(a.size(), b.size()); i++)
+        newVec.push_back(f(a[i], b[i]));
+    return newVec;
+}
+
+template <typename T> std::pair<std::vector<T>, std::vector<T>> dualmapby(T (*f)(std::string), std::vector<std::string> inp, const std::string &delim = " ", bool skipEmpty = false) {
+    std::vector<T> a, b;
+    for (const auto &val : inp) {
+        std::vector<std::string> vals = split(val, delim, skipEmpty);
+        a.push_back(f(vals[0]));
+        b.push_back(f(vals[1]));
+    }
+    return std::pair{ a, b };
 }
 
 template <typename T> T max(T a, T b) { return b > a ? b : a; }
@@ -151,14 +175,18 @@ std::string rep(std::string str, size_t count = 2, std::string separator = "") {
 }
 
 template <typename T>
-void sort(
-    std::vector<T> &vec, bool (*sfn)(T, T) = [](T a, T b) -> bool { return a < b; }) {
+void sort(std::vector<T> &vec, bool (*sfn)(T, T) = [](T a, T b) -> bool { return a < b; }) {
     std::sort(vec.begin(), vec.end(), sfn);
 }
 
 template <typename T>
-std::vector<T> sortip(
-    std::vector<T> vec, bool (*sfn)(T, T) = [](T a, T b) -> bool { return a < b; }) {
+void sort(std::vector<T> &a, std::vector<T> &b, bool (*sfn)(T, T) = [](T a, T b) -> bool { return a < b; }) {
+    sort(a, sfn);
+    sort(b, sfn);
+}
+
+template <typename T>
+std::vector<T> sortip(std::vector<T> vec, bool (*sfn)(T, T) = [](T a, T b) -> bool { return a < b; }) {
     std::sort(vec.begin(), vec.end(), sfn);
     return vec;
 }
@@ -184,6 +212,13 @@ template <typename T> size_t inPos(const std::vector<T> &vec, T v) {
         if (vec[i] == v)
             return i;
     return -1;
+}
+
+template<typename T> int count(T v, const std::vector<T> &vec) {
+    int c = 0;
+    for (const auto &val : vec)
+        if (v == val) c++;
+    return c;
 }
 
 template <typename T> std::vector<T> intersect(std::vector<T> vec, std::vector<T> bAnd) {
@@ -276,8 +311,14 @@ std::string trim(std::string str) { return trimleft(trimright(str)); }
 
 #ifndef _AOC_NO_DEFINES
 
-#define _aoc_strtoi [](std::string v) -> int { return std::stoi(v); }
-#define _aoc_strtoll [](std::string v) -> long long { return std::stoll(v); }
-#define _aoc_strtoull [](std::string v) -> size_t { return (size_t)std::stoll(v); }
+int _aoc_strtoi(std::string v) { return std::stoi(v); }
+long long _aoc_strtoll(std::string v) { return std::stoll(v); }
+size_t _aoc_strtoull(std::string v) { return (size_t)std::stoll(v); }
+
+template <typename T>
+T _aoc_sum(T a, T b) { return a + b; }
+
+template <typename T>
+T _aoc_dist(T a, T b) { return std::abs(b - a); }
 
 #endif // _AOC_NO_DEFINES
