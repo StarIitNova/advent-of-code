@@ -1,34 +1,27 @@
 // 00:08:40 #1986 (0*) | ~3 minute load time on question
 
-#include "core.h"
+#include "newcore.h"
 
 int main() {
-    std::vector<std::string> lines = AOC::split(AOC::readfile("input.txt"), "\n");
+    aoc::vector<aoc::string> lines = aoc::vector<aoc::string>::from(aoc::split(aoc::read_file("input.txt"), "\n"));
 
-    int t = 0;
-    for (size_t i = 0; i < lines.size(); i++) {
-        const auto &line = lines[i];
-        std::vector<int> data = AOC::map(_aoc_strtoi, AOC::split(line, " "));
-
-        int lock = 0;
-        int prev = data[0];
-        bool fail = false;
-        for (int x = 1; x < data.size(); x++) {
-            int dif = data[x] - prev;
-            if ((lock == -1 && dif <= 0) || (lock == 1 && dif >= 0) || dif == 0 || std::abs(dif) < 1 || std::abs(dif) > 3) {
-                fail = true;
-                break;
-            }
-
-            if (lock == 0)
-                lock = dif < 0 ? 1 : -1;
-            prev = data[x];
+    auto safe = [](const aoc::vector<int> &levels) -> bool {
+        aoc::vector<int> diffs {};
+        for (int i = 1; i < levels.size(); i++) {
+            diffs.push_back(levels[i] - levels[i - 1]);
         }
 
-        if (!fail) t++;
+        return aoc::all(aoc::map([](int x) { return aoc::within(1, x, 3); }, diffs)) |
+               aoc::all(aoc::map([](int x) { return aoc::within(-3, x, -1); }, diffs));
+    };
+
+    int count = 0;
+    for (const auto &line : lines) {
+        aoc::vector<int> levels = aoc::map(_aoc_strtoi, line.split());
+        if (safe(levels)) count++;
     }
 
-    std::cout << t << "\n";
+    std::cout << count << "\n";
 
     return 0;
 }
