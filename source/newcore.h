@@ -624,14 +624,14 @@ std::vector<_T> rotate(const std::vector<_T> &__v) {
     }
 
     for (size_t __i = 0; __i < __ms; ++__i) {
-        std::vector<_T> __ni;
+        _T __ni;
         for (const auto &__ii : __v) {
             auto __it = __ii.begin();
             std::advance(__it, __i);
             if (__it != __ii.end()) {
-                __ni.push_back(*__it);
+                __ni.insert(__ni.end(), *__it);
             } else {
-                __ni.push_back(_T());
+                __ni.resize(__ni.size() + 1);
             }
         }
 
