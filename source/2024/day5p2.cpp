@@ -1,3 +1,5 @@
+// 00:26:30 #2521 (0*)
+
 #include "newcore.h"
 
 int main() {
